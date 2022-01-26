@@ -9,6 +9,6 @@ class MakeADepositTest {
     @Test
     void make_a_deposit_add_amount_to_balance() {
         Account account = new Account();
-        assertThat(account).isNotNull();
+        assertThat(account.getBalance()).isEqualTo(0);
     }
 }
