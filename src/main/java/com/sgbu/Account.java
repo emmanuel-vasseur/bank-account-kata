@@ -1,7 +1,13 @@
 package com.sgbu;
 
 public class Account {
+    private int balance = 0;
+
     public int getBalance() {
-        return 0;
+        return balance;
+    }
+
+    public void deposit(int amount) {
+        balance += amount;
     }
 }
