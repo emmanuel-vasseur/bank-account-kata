@@ -1,13 +1,15 @@
 package com.sgbu;
 
-public class Account {
-    private int balance = 0;
+import java.math.BigDecimal;
 
-    public int getBalance() {
-        return balance;
+public class Account {
+    private BigDecimal balance = BigDecimal.ZERO;
+
+    public BigDecimal getBalance() {
+        return this.balance;
     }
 
-    public void deposit(int amount) {
-        balance += amount;
+    public void deposit(BigDecimal amount) {
+        this.balance = this.balance.add(amount);
     }
 }
