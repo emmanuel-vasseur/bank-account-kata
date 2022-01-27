@@ -1,5 +1,9 @@
 package com.sgbu;
 
+import com.sgbu.account.Account;
+import com.sgbu.client.Client;
+import com.sgbu.client.ClientNotFoundException;
+
 import java.math.BigDecimal;
 import java.util.Optional;
 

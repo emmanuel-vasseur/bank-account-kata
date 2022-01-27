@@ -1,6 +1,6 @@
 package com.sgbu.test;
 
-import com.sgbu.Client;
+import com.sgbu.client.Client;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.params.ParameterizedTest;

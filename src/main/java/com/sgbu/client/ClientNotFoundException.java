@@ -1,4 +1,4 @@
-package com.sgbu;
+package com.sgbu.client;
 
 public class ClientNotFoundException extends RuntimeException {
 

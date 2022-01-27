@@ -1,4 +1,4 @@
-package com.sgbu;
+package com.sgbu.account;
 
 import java.math.BigDecimal;
 

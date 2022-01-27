@@ -1,4 +1,4 @@
-package com.sgbu;
+package com.sgbu.account;
 
 public class InsufficientAmountException extends RuntimeException {
     public InsufficientAmountException() {

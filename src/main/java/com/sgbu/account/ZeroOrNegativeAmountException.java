@@ -1,4 +1,4 @@
-package com.sgbu;
+package com.sgbu.account;
 
 public class ZeroOrNegativeAmountException extends RuntimeException {
     public ZeroOrNegativeAmountException() {
