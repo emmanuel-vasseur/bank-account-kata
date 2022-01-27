@@ -1,10 +1,12 @@
 package com.sgbu;
 
 import com.sgbu.account.Account;
+import com.sgbu.account.Operation;
 import com.sgbu.client.Client;
 import com.sgbu.client.ClientNotFoundException;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class AccountService {
 
@@ -24,8 +26,12 @@ public class AccountService {
         clientAccount.withdrawal(amount);
     }
 
+    public List<Operation> getAccountHistory(Client client) {
+        return getClientAccount(client).getHistory();
+    }
+
     private Account getClientAccount(Client client) {
-        return this.accountRepository.findAccount(client)
+        return accountRepository.findAccount(client)
                 .orElseThrow(() -> new ClientNotFoundException(client));
     }
 }
