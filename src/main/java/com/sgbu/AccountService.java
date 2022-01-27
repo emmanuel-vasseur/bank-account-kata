@@ -24,6 +24,10 @@ public class AccountService {
         clientAccount.withdrawal(amount);
     }
 
+    public void getHistory(Client client) {
+        throw new ClientNotFoundException(client);
+    }
+
     private Account getClientAccount(Client client) {
         return this.accountRepository.findAccount(client)
                 .orElseThrow(() -> new ClientNotFoundException(client));
