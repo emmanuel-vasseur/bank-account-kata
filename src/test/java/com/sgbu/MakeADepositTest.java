@@ -1,6 +1,9 @@
 package com.sgbu;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 
@@ -28,9 +31,11 @@ class MakeADepositTest {
                 .hasMessage("Client not found");
     }
 
-    @Test
-    void client_should_encapsulate_client_id(){
-        Client client = new Client("client");
-        assertThat(client.getId()).isEqualTo("client");
+    @ParameterizedTest
+    @ValueSource(strings = {"client1", "client2"})
+    @NullAndEmptySource
+    void client_should_encapsulate_client_id(String clientId){
+        Client client = new Client(clientId);
+        assertThat(client.getId()).isEqualTo(clientId);
     }
 }
