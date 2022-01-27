@@ -1,5 +1,7 @@
 package com.sgbu;
 
+import java.util.Optional;
+
 public interface AccountRepository {
-    Account findAccount(Client client);
+    Optional<Account> findAccount(Client client);
 }

@@ -1,40 +1,59 @@
 package com.sgbu.test;
 
-import com.sgbu.Account;
-import com.sgbu.AccountRepository;
-import com.sgbu.AccountService;
-import com.sgbu.Client;
+import com.sgbu.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
+@ExtendWith(MockitoExtension.class)
 class AccountServiceTest {
 
-    @Test
-    void make_a_deposit_for_an_non_existing_client_should_fail(){
-        AccountRepository accountRepository = Mockito.mock(AccountRepository.class);
-        AccountService accountService = new AccountService(accountRepository);
-        assertThatThrownBy(() -> accountService.makeDeposit(new Client("inexistant"), BigDecimal.TEN))
-                .hasMessage("Client not found");
+    @Mock
+    AccountRepository accountRepository;
+
+    @InjectMocks
+    AccountService accountService;
+
+    @BeforeEach
+    void accountRepositoryDefaultBehavior() {
+        Mockito.when(accountRepository.findAccount(any())).thenReturn(Optional.empty());
     }
 
-    @Test
-    void make_a_deposit_for_an_existing_client_should_make_deposit_on_client_account(){
+    @ParameterizedTest
+    @ValueSource(strings = {"non-existent-client-1", "non-existent-client-2"})
+    void make_a_deposit_for_an_non_existing_client_should_fail(String clientId){
+        assertThatThrownBy(() -> accountService.makeDeposit(new Client(clientId), BigDecimal.TEN))
+                .isInstanceOf(ClientNotFoundException.class)
+                .hasMessage("Client not found: " + clientId);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"201.01", "530.10"})
+    void make_a_deposit_for_an_existing_client_should_make_deposit_on_client_account(String amount){
+        // Setup
         Client client = new Client("client");
         Account clientAccount = Mockito.mock(Account.class);
-        AccountRepository accountRepository = Mockito.mock(AccountRepository.class);
-        Mockito.when(accountRepository.findAccount(client)).thenReturn(clientAccount);
+        Mockito.when(accountRepository.findAccount(client)).thenReturn(Optional.of(clientAccount));
 
-        AccountService accountService = new AccountService(accountRepository);
-        accountService.makeDeposit(client, BigDecimal.TEN);
+        // Test
+        accountService.makeDeposit(client, new BigDecimal(amount));
 
-        Mockito.verify(clientAccount).deposit(BigDecimal.TEN);
+        // Assert
+        Mockito.verify(clientAccount).deposit(new BigDecimal(amount));
         Mockito.verifyNoMoreInteractions(clientAccount);
     }
 }

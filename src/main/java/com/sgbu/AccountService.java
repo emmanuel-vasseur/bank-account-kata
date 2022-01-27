@@ -1,6 +1,7 @@
 package com.sgbu;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 public class AccountService {
 
@@ -11,11 +12,11 @@ public class AccountService {
     }
 
     public void makeDeposit(Client client, BigDecimal amount) {
-        Account clientAccount = this.accountRepository.findAccount(client);
-        if(clientAccount == null) {
-            throw new RuntimeException("Client not found");
+        Optional<Account> clientAccount = this.accountRepository.findAccount(client);
+        if(clientAccount.isEmpty()) {
+            throw new ClientNotFoundException(client);
         }
-        clientAccount.deposit(amount);
+        clientAccount.get().deposit(amount);
     }
 
 }
