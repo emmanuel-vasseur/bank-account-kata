@@ -35,14 +35,13 @@ class AccountServiceTest {
     @InjectMocks
     AccountService accountService;
 
-    @ParameterizedTest
-    @ValueSource(strings = {"non-existent-client-1", "non-existent-client-2"})
-    void make_a_deposit_for_an_non_existing_client_should_fail(String clientId) {
+    @Test
+    void make_a_deposit_for_an_non_existing_client_should_fail() {
         Mockito.when(accountRepository.findAccount(any())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> accountService.makeDeposit(new Client(clientId), BigDecimal.TEN))
+        assertThatThrownBy(() -> accountService.makeDeposit(new Client("non-existent-client"), BigDecimal.TEN))
                 .isInstanceOf(ClientNotFoundException.class)
-                .hasMessage("Client not found: " + clientId);
+                .hasMessage("Client not found: non-existent-client");
     }
 
     @ParameterizedTest
@@ -61,12 +60,11 @@ class AccountServiceTest {
         Mockito.verifyNoMoreInteractions(clientAccount);
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"non-existent-client-1", "non-existent-client-2"})
-    void make_a_withdrawal_for_an_non_existing_client_should_fail(String clientId) {
-        assertThatThrownBy(() -> accountService.makeWithdrawal(new Client(clientId), BigDecimal.TEN))
+    @Test
+    void make_a_withdrawal_for_an_non_existing_client_should_fail() {
+        assertThatThrownBy(() -> accountService.makeWithdrawal(new Client("non-existent-client-2"), BigDecimal.TEN))
                 .isInstanceOf(ClientNotFoundException.class)
-                .hasMessage("Client not found: " + clientId);
+                .hasMessage("Client not found: non-existent-client-2");
     }
 
     @ParameterizedTest
@@ -87,9 +85,9 @@ class AccountServiceTest {
 
     @Test
     void get_history_for_an_non_existing_client_should_fail() {
-        assertThatThrownBy(() -> accountService.getAccountHistory(new Client("non-existent-client")))
+        assertThatThrownBy(() -> accountService.getAccountHistory(new Client("non-existent-client-3")))
                 .isInstanceOf(ClientNotFoundException.class)
-                .hasMessage("Client not found: non-existent-client");
+                .hasMessage("Client not found: non-existent-client-3");
     }
 
     @Test
