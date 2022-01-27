@@ -1,6 +1,7 @@
 package com.sgbu.test;
 
 import com.sgbu.AccountService;
+import com.sgbu.Client;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ class AccountServiceTest {
     @Test
     void make_a_deposit_for_an_non_existing_client_should_fail(){
         AccountService accountService = new AccountService();
-        assertThatThrownBy(() -> accountService.makeDeposit(BigDecimal.TEN))
+        assertThatThrownBy(() -> accountService.makeDeposit(new Client("inexistant"), BigDecimal.TEN))
                 .hasMessage("Client not found");
     }
 
