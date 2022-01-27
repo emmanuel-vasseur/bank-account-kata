@@ -86,4 +86,11 @@ class AccountTest {
     void operation_history_of_a_new_account_should_be_empty() {
         assertThat(new Account().getHistory()).isEmpty();
     }
+
+    @Test
+    void operation_history_of_an_account_with_a_deposit_should_contains_one_operation() {
+        Account account = new Account();
+        account.deposit(BigDecimal.TEN);
+        assertThat(account.getHistory()).hasSize(1);
+    }
 }
