@@ -8,6 +8,7 @@ import static java.math.BigDecimal.ZERO;
 
 public class Account {
     private BigDecimal balance = ZERO;
+    private final List<Operation> operationHistory = new ArrayList<>();
 
     public BigDecimal getBalance() {
         return this.balance;
@@ -15,6 +16,7 @@ public class Account {
 
     public void deposit(BigDecimal amount) {
         validatePositiveAmount(amount);
+        operationHistory.add(new Operation());
         this.balance = this.balance.add(amount);
     }
 
@@ -35,6 +37,6 @@ public class Account {
     }
 
     public List<Operation> getHistory() {
-        return new ArrayList<>();
+        return operationHistory;
     }
 }
