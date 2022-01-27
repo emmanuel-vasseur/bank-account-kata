@@ -52,4 +52,12 @@ class AccountTest {
         account.withdrawal(BigDecimal.ONE);
         assertThat(account.getBalance()).isEqualTo(new BigDecimal("9"));
     }
+
+    @Test
+    void make_a_withdrawal_of_all_balance_should_set_balance_to_zero() {
+        Account account = new Account();
+        account.deposit(BigDecimal.ONE);
+        account.withdrawal(BigDecimal.ONE);
+        assertThat(account.getBalance()).isEqualTo(BigDecimal.ZERO);
+    }
 }
