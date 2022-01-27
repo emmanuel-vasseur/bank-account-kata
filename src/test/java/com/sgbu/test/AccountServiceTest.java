@@ -3,6 +3,7 @@ package com.sgbu.test;
 import com.sgbu.AccountRepository;
 import com.sgbu.AccountService;
 import com.sgbu.account.Account;
+import com.sgbu.account.Operation;
 import com.sgbu.client.Client;
 import com.sgbu.client.ClientNotFoundException;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -17,8 +18,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 
@@ -87,5 +90,22 @@ class AccountServiceTest {
         assertThatThrownBy(() -> accountService.getHistory(new Client("non-existent-client")))
                 .isInstanceOf(ClientNotFoundException.class)
                 .hasMessage("Client not found: non-existent-client");
+    }
+
+    @Test
+    void get_history_for_an_existing_client_should_return_operation_history_of_client_account() {
+        // Setup
+        Client client = new Client("client");
+        Account clientAccount = new Account();
+        clientAccount.deposit(BigDecimal.TEN);
+        Mockito.when(accountRepository.findAccount(client)).thenReturn(Optional.of(clientAccount));
+
+        // Test
+        List<Operation> accountOperations = accountService.getHistory(client);
+
+        // Assert
+        assertThat(accountOperations)
+                .hasSize(1)
+                .isEqualTo(clientAccount.getHistory());
     }
 }
