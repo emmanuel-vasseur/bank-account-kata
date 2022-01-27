@@ -1,5 +1,5 @@
 package com.sgbu;
 
 public enum OperationType {
-    DEPOSIT
+    DEPOSIT, WITHDRAWAL
 }

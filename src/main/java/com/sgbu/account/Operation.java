@@ -8,9 +8,11 @@ import java.time.Instant;
 public class Operation {
     private final BigDecimal amount;
     private final Instant operationDate;
+    private final OperationType operationType;
     private final BigDecimal balance;
 
-    public Operation(OperationType deposit, BigDecimal amount, Instant operationDate, BigDecimal balance) {
+    public Operation(OperationType operationType, BigDecimal amount, Instant operationDate, BigDecimal balance) {
+        this.operationType = operationType;
         this.amount = amount;
         this.operationDate = operationDate;
         this.balance = balance;
@@ -21,7 +23,7 @@ public class Operation {
     }
 
     public OperationType getType() {
-        return OperationType.DEPOSIT;
+        return operationType;
     }
 
     public Instant getDate() {

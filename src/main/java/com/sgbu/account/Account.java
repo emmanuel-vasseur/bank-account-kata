@@ -31,6 +31,7 @@ public class Account {
         }
 
         this.balance = this.balance.subtract(amount);
+        operationHistory.add(new Operation(OperationType.WITHDRAWAL, amount, Instant.now(), balance));
     }
 
     private void validatePositiveAmount(BigDecimal amount) {
