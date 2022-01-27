@@ -19,8 +19,8 @@ public class Account {
 
     public void deposit(BigDecimal amount) {
         validatePositiveAmount(amount);
-        operationHistory.add(new Operation(OperationType.DEPOSIT, amount, Instant.now(), balance));
         this.balance = this.balance.add(amount);
+        operationHistory.add(new Operation(OperationType.DEPOSIT, amount, Instant.now(), balance));
     }
 
     public void withdrawal(BigDecimal amount) {
