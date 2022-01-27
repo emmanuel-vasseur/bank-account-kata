@@ -103,4 +103,23 @@ class AccountTest {
         assertThat(account.getHistory().get(0).getDate()).isBetween(before, after);
     }
 
+    @Test
+    void operation_history_of_an_account_with_a_deposit_then_a_withdrawal_should_contains_two_operations_with_withdrawal_correct_attributes() {
+        // Setup
+        Account account = new Account();
+        account.deposit(BigDecimal.TEN);
+
+        // Test
+        Instant before = Instant.now();
+        account.withdrawal(BigDecimal.ONE);
+        Instant after = Instant.now();
+
+        // Assert
+        assertThat(account.getHistory()).hasSize(2);
+        assertThat(account.getHistory().get(1).getAmount()).isEqualTo(BigDecimal.ONE);
+        assertThat(account.getHistory().get(1).getType()).isEqualTo(OperationType.WITHDRAWAL);
+        assertThat(account.getHistory().get(1).getBalance()).isEqualTo(new BigDecimal("9"));
+        assertThat(account.getHistory().get(1).getDate()).isBetween(before, after);
+    }
+
 }
