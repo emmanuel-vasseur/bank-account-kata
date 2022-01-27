@@ -64,4 +64,20 @@ class AccountServiceTest {
                 .isInstanceOf(ClientNotFoundException.class)
                 .hasMessage("Client not found: " + clientId);
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"201.01", "530.10"})
+    void make_a_withdrawal_for_an_existing_client_should_make_withdrawal_on_client_account(String amount) {
+        // Setup
+        Client client = new Client("client");
+        Account clientAccount = Mockito.mock(Account.class);
+        Mockito.when(accountRepository.findAccount(client)).thenReturn(Optional.of(clientAccount));
+
+        // Test
+        accountService.makeWithdrawal(client, new BigDecimal(amount));
+
+        // Assert
+        Mockito.verify(clientAccount).withdrawal(new BigDecimal(amount));
+        Mockito.verifyNoMoreInteractions(clientAccount);
+    }
 }
