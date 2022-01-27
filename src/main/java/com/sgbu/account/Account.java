@@ -1,6 +1,8 @@
 package com.sgbu.account;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.math.BigDecimal.ZERO;
 
@@ -30,5 +32,9 @@ public class Account {
         if (ZERO.compareTo(amount) >= 0) {
             throw new ZeroOrNegativeAmountException();
         }
+    }
+
+    public List<Operation> getHistory() {
+        return new ArrayList<>();
     }
 }
