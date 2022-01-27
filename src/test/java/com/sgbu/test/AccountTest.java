@@ -81,4 +81,9 @@ class AccountTest {
                 .isInstanceOf(ZeroOrNegativeAmountException.class)
                 .hasMessage("Zero or negative amount");
     }
+
+    @Test
+    void operation_history_of_a_new_account_should_be_empty() {
+        assertThat(new Account().getHistory()).isEmpty();
+    }
 }
