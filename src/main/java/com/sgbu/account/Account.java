@@ -16,7 +16,7 @@ public class Account {
 
     public void deposit(BigDecimal amount) {
         validatePositiveAmount(amount);
-        operationHistory.add(new Operation());
+        operationHistory.add(new Operation(amount));
         this.balance = this.balance.add(amount);
     }
 
