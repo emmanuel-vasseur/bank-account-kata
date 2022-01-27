@@ -23,4 +23,7 @@ public class AccountService {
         clientAccount.get().deposit(amount);
     }
 
+    public void makeWithdrawal(Client client, BigDecimal amount) {
+        throw new ClientNotFoundException(client);
+    }
 }
