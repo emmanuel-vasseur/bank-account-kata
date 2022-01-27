@@ -110,7 +110,7 @@ class AccountTest {
         assertThat(account.getHistory()).hasSize(1);
         Operation depositOperation = account.getHistory().get(0);
         assertThat(depositOperation.getAmount()).isEqualTo(BigDecimal.ONE);
-        assertThat(depositOperation.getType()).isEqualTo(OperationType.DEPOSIT);
+        assertThat(depositOperation.getOperationType()).isEqualTo(OperationType.DEPOSIT);
         assertThat(depositOperation.getBalance()).isEqualTo(BigDecimal.ONE);
         assertThat(depositOperation.getDate()).isBetween(before, after);
     }
@@ -130,7 +130,7 @@ class AccountTest {
         assertThat(account.getHistory()).hasSize(2);
         Operation withdrawalOperation = account.getHistory().get(1);
         assertThat(withdrawalOperation.getAmount()).isEqualTo(BigDecimal.ONE);
-        assertThat(withdrawalOperation.getType()).isEqualTo(OperationType.WITHDRAWAL);
+        assertThat(withdrawalOperation.getOperationType()).isEqualTo(OperationType.WITHDRAWAL);
         assertThat(withdrawalOperation.getBalance()).isEqualTo("9");
         assertThat(withdrawalOperation.getDate()).isBetween(before, after);
     }

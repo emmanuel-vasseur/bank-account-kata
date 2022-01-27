@@ -22,7 +22,7 @@ public class Operation {
         return amount;
     }
 
-    public OperationType getType() {
+    public OperationType getOperationType() {
         return operationType;
     }
 

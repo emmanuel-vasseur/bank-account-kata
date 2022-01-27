@@ -19,7 +19,7 @@ class OperationTest {
         Instant operationDate = Instant.now();
         Operation operation = new Operation(OperationType.DEPOSIT, BigDecimal.ONE, operationDate, BigDecimal.TEN);
         assertThat(operation.getAmount()).isEqualTo(BigDecimal.ONE);
-        assertThat(operation.getType()).isEqualTo(OperationType.DEPOSIT);
+        assertThat(operation.getOperationType()).isEqualTo(OperationType.DEPOSIT);
         assertThat(operation.getDate()).isEqualTo(operationDate);
         assertThat(operation.getBalance()).isEqualTo(BigDecimal.TEN);
     }
