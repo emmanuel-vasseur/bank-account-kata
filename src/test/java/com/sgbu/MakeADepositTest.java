@@ -27,4 +27,10 @@ class MakeADepositTest {
         assertThatThrownBy(() -> accountService.makeDeposit(BigDecimal.TEN))
                 .hasMessage("Client not found");
     }
+
+    @Test
+    void client_should_encapsulate_client_id(){
+        Client client = new Client("client");
+        assertThat(client.getId()).isEqualTo("client");
+    }
 }
