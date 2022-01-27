@@ -1,6 +1,8 @@
 package com.sgbu.test;
 
-import com.sgbu.Account;
+import com.sgbu.account.Account;
+import com.sgbu.account.InsufficientAmountException;
+import com.sgbu.account.ZeroOrNegativeAmountException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class AccountTest {
@@ -35,5 +38,47 @@ class AccountTest {
         account.deposit(new BigDecimal("530.10"));
         account.deposit(new BigDecimal("201.01"));
         assertThat(account.getBalance()).isEqualTo(new BigDecimal("745.11"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"0", "-1"})
+    void make_a_deposit_with_zero_or_negative_amount_should_fail(String negativeOrZero) {
+        Account account = new Account();
+        assertThatThrownBy(() -> account.deposit(new BigDecimal(negativeOrZero)))
+                .isInstanceOf(ZeroOrNegativeAmountException.class)
+                .hasMessage("Zero or negative amount");
+    }
+
+    @Test
+    void make_a_withdrawal_with_insufficient_balance_should_fail() {
+        Account account = new Account();
+        assertThatThrownBy(() -> account.withdrawal(BigDecimal.ONE))
+                .isInstanceOf(InsufficientAmountException.class)
+                .hasMessage("Insufficient amount");
+    }
+
+    @Test
+    void make_a_withdrawal_with_sufficient_balance_should_subtract_amount_to_balance() {
+        Account account = new Account();
+        account.deposit(BigDecimal.TEN);
+        account.withdrawal(BigDecimal.ONE);
+        assertThat(account.getBalance()).isEqualTo(new BigDecimal("9"));
+    }
+
+    @Test
+    void make_a_withdrawal_of_all_balance_should_set_balance_to_zero() {
+        Account account = new Account();
+        account.deposit(BigDecimal.ONE);
+        account.withdrawal(BigDecimal.ONE);
+        assertThat(account.getBalance()).isEqualTo(BigDecimal.ZERO);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"0", "-1"})
+    void make_a_withdrawal_with_zero_or_negative_amount_should_fail(String negativeOrZero) {
+        Account account = new Account();
+        assertThatThrownBy(() -> account.withdrawal(new BigDecimal(negativeOrZero)))
+                .isInstanceOf(ZeroOrNegativeAmountException.class)
+                .hasMessage("Zero or negative amount");
     }
 }
