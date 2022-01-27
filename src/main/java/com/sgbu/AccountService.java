@@ -24,6 +24,10 @@ public class AccountService {
     }
 
     public void makeWithdrawal(Client client, BigDecimal amount) {
-        throw new ClientNotFoundException(client);
+        Optional<Account> clientAccount = this.accountRepository.findAccount(client);
+        if (clientAccount.isEmpty()) {
+            throw new ClientNotFoundException(client);
+        }
+        clientAccount.get().withdrawal(amount);
     }
 }
