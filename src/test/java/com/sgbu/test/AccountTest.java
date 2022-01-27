@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class AccountTest {
@@ -35,5 +36,12 @@ class AccountTest {
         account.deposit(new BigDecimal("530.10"));
         account.deposit(new BigDecimal("201.01"));
         assertThat(account.getBalance()).isEqualTo(new BigDecimal("745.11"));
+    }
+
+    @Test
+    void make_a_withdrawal_with_insufficient_balance_should_fail() {
+        Account account = new Account();
+        assertThatThrownBy(() -> account.withdrawal(BigDecimal.ONE))
+                .hasMessage("Insufficient amount");
     }
 }
