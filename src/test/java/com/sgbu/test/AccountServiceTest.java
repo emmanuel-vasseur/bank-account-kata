@@ -87,7 +87,7 @@ class AccountServiceTest {
 
     @Test
     void get_history_for_an_non_existing_client_should_fail() {
-        assertThatThrownBy(() -> accountService.getHistory(new Client("non-existent-client")))
+        assertThatThrownBy(() -> accountService.getAccountHistory(new Client("non-existent-client")))
                 .isInstanceOf(ClientNotFoundException.class)
                 .hasMessage("Client not found: non-existent-client");
     }
@@ -101,7 +101,7 @@ class AccountServiceTest {
         Mockito.when(accountRepository.findAccount(client)).thenReturn(Optional.of(clientAccount));
 
         // Test
-        List<Operation> accountOperations = accountService.getHistory(client);
+        List<Operation> accountOperations = accountService.getAccountHistory(client);
 
         // Assert
         assertThat(accountOperations)

@@ -1,10 +1,6 @@
 package com.sgbu.test;
 
-import com.sgbu.OperationType;
-import com.sgbu.account.Account;
-import com.sgbu.account.InsufficientAmountException;
-import com.sgbu.account.Operation;
-import com.sgbu.account.ZeroOrNegativeAmountException;
+import com.sgbu.account.*;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;

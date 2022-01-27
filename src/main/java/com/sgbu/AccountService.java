@@ -26,12 +26,12 @@ public class AccountService {
         clientAccount.withdrawal(amount);
     }
 
-    public List<Operation> getHistory(Client client) {
+    public List<Operation> getAccountHistory(Client client) {
         return getClientAccount(client).getHistory();
     }
 
     private Account getClientAccount(Client client) {
-        return this.accountRepository.findAccount(client)
+        return accountRepository.findAccount(client)
                 .orElseThrow(() -> new ClientNotFoundException(client));
     }
 }

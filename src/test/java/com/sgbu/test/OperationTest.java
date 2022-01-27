@@ -1,7 +1,7 @@
 package com.sgbu.test;
 
-import com.sgbu.OperationType;
 import com.sgbu.account.Operation;
+import com.sgbu.account.OperationType;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;

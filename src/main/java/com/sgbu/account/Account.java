@@ -1,7 +1,5 @@
 package com.sgbu.account;
 
-import com.sgbu.OperationType;
-
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -14,23 +12,24 @@ public class Account {
     private final List<Operation> operationHistory = new ArrayList<>();
 
     public BigDecimal getBalance() {
-        return this.balance;
+        return balance;
+    }
+
+    public List<Operation> getHistory() {
+        return List.copyOf(operationHistory);
     }
 
     public void deposit(BigDecimal amount) {
         validatePositiveAmount(amount);
-        this.balance = this.balance.add(amount);
+        balance = balance.add(amount);
         operationHistory.add(new Operation(OperationType.DEPOSIT, amount, Instant.now(), balance));
     }
 
     public void withdrawal(BigDecimal amount) {
         validatePositiveAmount(amount);
+        validateSufficientBalance(amount);
 
-        if (amount.compareTo(balance) > 0) {
-            throw new InsufficientAmountException();
-        }
-
-        this.balance = this.balance.subtract(amount);
+        balance = balance.subtract(amount);
         operationHistory.add(new Operation(OperationType.WITHDRAWAL, amount, Instant.now(), balance));
     }
 
@@ -40,7 +39,9 @@ public class Account {
         }
     }
 
-    public List<Operation> getHistory() {
-        return operationHistory;
+    private void validateSufficientBalance(BigDecimal amount) {
+        if (amount.compareTo(balance) > 0) {
+            throw new InsufficientAmountException();
+        }
     }
 }

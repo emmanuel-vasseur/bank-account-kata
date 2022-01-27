@@ -1,7 +1,5 @@
 package com.sgbu.account;
 
-import com.sgbu.OperationType;
-
 import java.math.BigDecimal;
 import java.time.Instant;
 
