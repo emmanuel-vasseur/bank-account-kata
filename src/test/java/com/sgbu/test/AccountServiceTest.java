@@ -7,6 +7,7 @@ import com.sgbu.client.Client;
 import com.sgbu.client.ClientNotFoundException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -79,5 +80,12 @@ class AccountServiceTest {
         // Assert
         Mockito.verify(clientAccount).withdrawal(new BigDecimal(amount));
         Mockito.verifyNoMoreInteractions(clientAccount);
+    }
+
+    @Test
+    void get_history_for_an_non_existing_client_should_fail() {
+        assertThatThrownBy(() -> accountService.getHistory(new Client("non-existent-client")))
+                .isInstanceOf(ClientNotFoundException.class)
+                .hasMessage("Client not found: non-existent-client");
     }
 }
