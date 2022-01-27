@@ -12,4 +12,8 @@ public class Account {
     public void deposit(BigDecimal amount) {
         this.balance = this.balance.add(amount);
     }
+
+    public void withdrawal(BigDecimal amount) {
+        throw new RuntimeException("Insufficient amount");
+    }
 }
