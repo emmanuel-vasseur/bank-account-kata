@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class MakeADepositTest {
 
@@ -19,5 +19,12 @@ class MakeADepositTest {
         Account account = new Account();
         account.deposit(new BigDecimal("201.01"));
         assertThat(account.getBalance()).isEqualTo(new BigDecimal("201.01"));
+    }
+
+    @Test
+    void make_a_deposit_for_an_non_existing_client_should_fail(){
+        AccountService accountService = new AccountService();
+        assertThatThrownBy(() -> accountService.makeDeposit(BigDecimal.TEN))
+                .hasMessage("Client not found");
     }
 }
