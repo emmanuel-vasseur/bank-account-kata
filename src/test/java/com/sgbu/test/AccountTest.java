@@ -88,9 +88,11 @@ class AccountTest {
     }
 
     @Test
-    void operation_history_of_an_account_with_a_deposit_should_contains_one_operation() {
+    void operation_history_of_an_account_with_a_deposit_should_contains_one_operation_with_correct_attributes() {
         Account account = new Account();
         account.deposit(BigDecimal.TEN);
+
         assertThat(account.getHistory()).hasSize(1);
+        assertThat(account.getHistory().get(0).getAmount()).isEqualTo(BigDecimal.TEN);
     }
 }
