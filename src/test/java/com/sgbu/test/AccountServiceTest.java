@@ -18,7 +18,8 @@ class AccountServiceTest {
 
     @Test
     void make_a_deposit_for_an_non_existing_client_should_fail(){
-        AccountService accountService = new AccountService();
+        AccountRepository accountRepository = Mockito.mock(AccountRepository.class);
+        AccountService accountService = new AccountService(accountRepository);
         assertThatThrownBy(() -> accountService.makeDeposit(new Client("inexistant"), BigDecimal.TEN))
                 .hasMessage("Client not found");
     }
@@ -32,6 +33,8 @@ class AccountServiceTest {
 
         AccountService accountService = new AccountService(accountRepository);
         accountService.makeDeposit(client, BigDecimal.TEN);
+
         Mockito.verify(clientAccount).deposit(BigDecimal.TEN);
+        Mockito.verifyNoMoreInteractions(clientAccount);
     }
 }
