@@ -1,6 +1,9 @@
 package com.sgbu.account;
 
+import com.sgbu.OperationType;
+
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +19,7 @@ public class Account {
 
     public void deposit(BigDecimal amount) {
         validatePositiveAmount(amount);
-        operationHistory.add(new Operation(amount));
+        operationHistory.add(new Operation(OperationType.DEPOSIT, amount, Instant.now(), balance));
         this.balance = this.balance.add(amount);
     }
 
