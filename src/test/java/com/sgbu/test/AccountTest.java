@@ -38,6 +38,14 @@ class AccountTest {
         assertThat(account.getBalance()).isEqualTo(new BigDecimal("745.11"));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"0", "-1"})
+    void make_negative_or_zero_deposit_should_fail(String negativeOrZero) {
+        Account account = new Account();
+        assertThatThrownBy(() -> account.deposit(new BigDecimal(negativeOrZero)))
+                .hasMessage("Invalid operation amount");
+    }
+
     @Test
     void make_a_withdrawal_with_insufficient_balance_should_fail() {
         Account account = new Account();
@@ -59,5 +67,13 @@ class AccountTest {
         account.deposit(BigDecimal.ONE);
         account.withdrawal(BigDecimal.ONE);
         assertThat(account.getBalance()).isEqualTo(BigDecimal.ZERO);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"0", "-1"})
+    void make_negative_or_zero_withdrawal_should_fail(String negativeOrZero) {
+        Account account = new Account();
+        assertThatThrownBy(() -> account.withdrawal(new BigDecimal(negativeOrZero)))
+                .hasMessage("Invalid operation amount");
     }
 }
