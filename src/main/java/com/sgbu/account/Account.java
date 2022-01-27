@@ -12,22 +12,23 @@ public class Account {
     }
 
     public void deposit(BigDecimal amount) {
-        if (ZERO.compareTo(amount) >= 0) {
-            throw new ZeroOrNegativeAmountException();
-        }
-
+        validatePositiveAmount(amount);
         this.balance = this.balance.add(amount);
     }
 
     public void withdrawal(BigDecimal amount) {
-        if (ZERO.compareTo(amount) >= 0) {
-            throw new ZeroOrNegativeAmountException();
-        }
+        validatePositiveAmount(amount);
 
         if (amount.compareTo(balance) > 0) {
             throw new InsufficientAmountException();
         }
 
         this.balance = this.balance.subtract(amount);
+    }
+
+    private void validatePositiveAmount(BigDecimal amount) {
+        if (ZERO.compareTo(amount) >= 0) {
+            throw new ZeroOrNegativeAmountException();
+        }
     }
 }
