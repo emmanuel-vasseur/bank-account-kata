@@ -1,5 +1,6 @@
 package com.sgbu.test;
 
+import com.sgbu.OperationType;
 import com.sgbu.account.Account;
 import com.sgbu.account.InsufficientAmountException;
 import com.sgbu.account.ZeroOrNegativeAmountException;
@@ -10,6 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -90,9 +92,15 @@ class AccountTest {
     @Test
     void operation_history_of_an_account_with_a_deposit_should_contains_one_operation_with_correct_attributes() {
         Account account = new Account();
-        account.deposit(BigDecimal.TEN);
+        Instant before = Instant.now();
+        account.deposit(BigDecimal.ONE);
+        Instant after = Instant.now();
 
         assertThat(account.getHistory()).hasSize(1);
-        assertThat(account.getHistory().get(0).getAmount()).isEqualTo(BigDecimal.TEN);
+        assertThat(account.getHistory().get(0).getAmount()).isEqualTo(BigDecimal.ONE);
+        assertThat(account.getHistory().get(0).getType()).isEqualTo(OperationType.DEPOSIT);
+        assertThat(account.getHistory().get(0).getBalance()).isEqualTo(BigDecimal.ONE);
+        assertThat(account.getHistory().get(0).getDate()).isBetween(before, after);
     }
+
 }
