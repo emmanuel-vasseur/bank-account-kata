@@ -59,4 +59,12 @@ class AccountServiceTest {
         Mockito.verify(clientAccount).deposit(new BigDecimal(amount));
         Mockito.verifyNoMoreInteractions(clientAccount);
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"non-existent-client-1", "non-existent-client-2"})
+    void make_a_withdrawal_for_an_non_existing_client_should_fail(String clientId) {
+        assertThatThrownBy(() -> accountService.makeWithdrawal(new Client(clientId), BigDecimal.TEN))
+                .isInstanceOf(ClientNotFoundException.class)
+                .hasMessage("Client not found: " + clientId);
+    }
 }
