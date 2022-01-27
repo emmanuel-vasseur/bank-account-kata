@@ -14,6 +14,9 @@ public class Account {
     }
 
     public void withdrawal(BigDecimal amount) {
-        throw new RuntimeException("Insufficient amount");
+        if(amount.compareTo(balance) > 0) {
+            throw new RuntimeException("Insufficient amount");
+        }
+        this.balance = this.balance.subtract(amount);
     }
 }
