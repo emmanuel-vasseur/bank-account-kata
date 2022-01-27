@@ -1,10 +1,13 @@
 package com.sgbu.test;
 
+import com.sgbu.Account;
+import com.sgbu.AccountRepository;
 import com.sgbu.AccountService;
 import com.sgbu.Client;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 
@@ -20,4 +23,15 @@ class AccountServiceTest {
                 .hasMessage("Client not found");
     }
 
+    @Test
+    void make_a_deposit_for_an_existing_client_should_make_deposit_on_client_account(){
+        Client client = new Client("client");
+        Account clientAccount = Mockito.mock(Account.class);
+        AccountRepository accountRepository = Mockito.mock(AccountRepository.class);
+        Mockito.when(accountRepository.findAccount(client)).thenReturn(clientAccount);
+
+        AccountService accountService = new AccountService(accountRepository);
+        accountService.makeDeposit(client, BigDecimal.TEN);
+        Mockito.verify(clientAccount).deposit(BigDecimal.TEN);
+    }
 }
