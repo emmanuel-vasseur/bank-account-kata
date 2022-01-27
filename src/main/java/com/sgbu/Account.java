@@ -12,20 +12,20 @@ public class Account {
     }
 
     public void deposit(BigDecimal amount) {
-        if(ZERO.compareTo(amount) >= 0) {
-            throw new RuntimeException("Invalid operation amount");
+        if (ZERO.compareTo(amount) >= 0) {
+            throw new ZeroOrNegativeAmountException();
         }
 
         this.balance = this.balance.add(amount);
     }
 
     public void withdrawal(BigDecimal amount) {
-        if(ZERO.compareTo(amount) >= 0) {
-            throw new RuntimeException("Invalid operation amount");
+        if (ZERO.compareTo(amount) >= 0) {
+            throw new ZeroOrNegativeAmountException();
         }
 
-        if(amount.compareTo(balance) > 0) {
-            throw new RuntimeException("Insufficient amount");
+        if (amount.compareTo(balance) > 0) {
+            throw new InsufficientAmountException();
         }
 
         this.balance = this.balance.subtract(amount);

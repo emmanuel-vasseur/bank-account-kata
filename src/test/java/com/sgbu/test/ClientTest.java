@@ -15,7 +15,7 @@ class ClientTest {
     @ParameterizedTest
     @ValueSource(strings = {"client1", "client2"})
     @NullAndEmptySource
-    void client_should_encapsulate_client_id(String clientId){
+    void client_should_encapsulate_client_id(String clientId) {
         Client client = new Client(clientId);
         assertThat(client.getId()).isEqualTo(clientId);
     }

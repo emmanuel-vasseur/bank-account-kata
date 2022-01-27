@@ -1,6 +1,8 @@
 package com.sgbu.test;
 
 import com.sgbu.Account;
+import com.sgbu.InsufficientAmountException;
+import com.sgbu.ZeroOrNegativeAmountException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
@@ -40,16 +42,18 @@ class AccountTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"0", "-1"})
-    void make_negative_or_zero_deposit_should_fail(String negativeOrZero) {
+    void make_a_deposit_with_zero_or_negative_amount_should_fail(String negativeOrZero) {
         Account account = new Account();
         assertThatThrownBy(() -> account.deposit(new BigDecimal(negativeOrZero)))
-                .hasMessage("Invalid operation amount");
+                .isInstanceOf(ZeroOrNegativeAmountException.class)
+                .hasMessage("Zero or negative amount");
     }
 
     @Test
     void make_a_withdrawal_with_insufficient_balance_should_fail() {
         Account account = new Account();
         assertThatThrownBy(() -> account.withdrawal(BigDecimal.ONE))
+                .isInstanceOf(InsufficientAmountException.class)
                 .hasMessage("Insufficient amount");
     }
 
@@ -71,9 +75,10 @@ class AccountTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"0", "-1"})
-    void make_negative_or_zero_withdrawal_should_fail(String negativeOrZero) {
+    void make_a_withdrawal_with_zero_or_negative_amount_should_fail(String negativeOrZero) {
         Account account = new Account();
         assertThatThrownBy(() -> account.withdrawal(new BigDecimal(negativeOrZero)))
-                .hasMessage("Invalid operation amount");
+                .isInstanceOf(ZeroOrNegativeAmountException.class)
+                .hasMessage("Zero or negative amount");
     }
 }

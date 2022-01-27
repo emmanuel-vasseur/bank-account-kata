@@ -35,7 +35,7 @@ class AccountServiceTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"non-existent-client-1", "non-existent-client-2"})
-    void make_a_deposit_for_an_non_existing_client_should_fail(String clientId){
+    void make_a_deposit_for_an_non_existing_client_should_fail(String clientId) {
         assertThatThrownBy(() -> accountService.makeDeposit(new Client(clientId), BigDecimal.TEN))
                 .isInstanceOf(ClientNotFoundException.class)
                 .hasMessage("Client not found: " + clientId);
@@ -43,7 +43,7 @@ class AccountServiceTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"201.01", "530.10"})
-    void make_a_deposit_for_an_existing_client_should_make_deposit_on_client_account(String amount){
+    void make_a_deposit_for_an_existing_client_should_make_deposit_on_client_account(String amount) {
         // Setup
         Client client = new Client("client");
         Account clientAccount = Mockito.mock(Account.class);

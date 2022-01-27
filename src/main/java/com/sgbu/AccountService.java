@@ -13,7 +13,7 @@ public class AccountService {
 
     public void makeDeposit(Client client, BigDecimal amount) {
         Optional<Account> clientAccount = this.accountRepository.findAccount(client);
-        if(clientAccount.isEmpty()) {
+        if (clientAccount.isEmpty()) {
             throw new ClientNotFoundException(client);
         }
         clientAccount.get().deposit(amount);
