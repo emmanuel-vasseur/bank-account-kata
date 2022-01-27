@@ -3,6 +3,7 @@ package com.sgbu.test;
 import com.sgbu.OperationType;
 import com.sgbu.account.Account;
 import com.sgbu.account.InsufficientAmountException;
+import com.sgbu.account.Operation;
 import com.sgbu.account.ZeroOrNegativeAmountException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -13,6 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+import static java.math.BigDecimal.ZERO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -22,7 +24,7 @@ class AccountTest {
     @Test
     void create_an_account_should_initialize_balance_to_zero() {
         Account account = new Account();
-        assertThat(account.getBalance()).isEqualTo(BigDecimal.ZERO);
+        assertThat(account.getBalance()).isEqualTo(ZERO);
     }
 
     @ParameterizedTest
@@ -30,7 +32,7 @@ class AccountTest {
     void make_a_deposit_should_add_amount_to_balance(String amount) {
         Account account = new Account();
         account.deposit(new BigDecimal(amount));
-        assertThat(account.getBalance()).isEqualTo(new BigDecimal(amount));
+        assertThat(account.getBalance()).isEqualTo(amount);
     }
 
     @Test
@@ -39,24 +41,30 @@ class AccountTest {
         account.deposit(new BigDecimal("14"));
         account.deposit(new BigDecimal("530.10"));
         account.deposit(new BigDecimal("201.01"));
-        assertThat(account.getBalance()).isEqualTo(new BigDecimal("745.11"));
+        assertThat(account.getBalance()).isEqualTo("745.11");
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"0", "-1"})
     void make_a_deposit_with_zero_or_negative_amount_should_fail(String negativeOrZero) {
         Account account = new Account();
+
         assertThatThrownBy(() -> account.deposit(new BigDecimal(negativeOrZero)))
                 .isInstanceOf(ZeroOrNegativeAmountException.class)
                 .hasMessage("Zero or negative amount");
+
+        assertThatAccountHasNotBeenModified(account);
     }
 
     @Test
     void make_a_withdrawal_with_insufficient_balance_should_fail() {
         Account account = new Account();
+
         assertThatThrownBy(() -> account.withdrawal(BigDecimal.ONE))
                 .isInstanceOf(InsufficientAmountException.class)
                 .hasMessage("Insufficient amount");
+
+        assertThatAccountHasNotBeenModified(account);
     }
 
     @Test
@@ -64,7 +72,7 @@ class AccountTest {
         Account account = new Account();
         account.deposit(BigDecimal.TEN);
         account.withdrawal(BigDecimal.ONE);
-        assertThat(account.getBalance()).isEqualTo(new BigDecimal("9"));
+        assertThat(account.getBalance()).isEqualTo("9");
     }
 
     @Test
@@ -72,16 +80,19 @@ class AccountTest {
         Account account = new Account();
         account.deposit(BigDecimal.ONE);
         account.withdrawal(BigDecimal.ONE);
-        assertThat(account.getBalance()).isEqualTo(BigDecimal.ZERO);
+        assertThat(account.getBalance()).isEqualTo(ZERO);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"0", "-1"})
     void make_a_withdrawal_with_zero_or_negative_amount_should_fail(String negativeOrZero) {
         Account account = new Account();
+
         assertThatThrownBy(() -> account.withdrawal(new BigDecimal(negativeOrZero)))
                 .isInstanceOf(ZeroOrNegativeAmountException.class)
                 .hasMessage("Zero or negative amount");
+
+        assertThatAccountHasNotBeenModified(account);
     }
 
     @Test
@@ -97,10 +108,11 @@ class AccountTest {
         Instant after = Instant.now();
 
         assertThat(account.getHistory()).hasSize(1);
-        assertThat(account.getHistory().get(0).getAmount()).isEqualTo(BigDecimal.ONE);
-        assertThat(account.getHistory().get(0).getType()).isEqualTo(OperationType.DEPOSIT);
-        assertThat(account.getHistory().get(0).getBalance()).isEqualTo(BigDecimal.ONE);
-        assertThat(account.getHistory().get(0).getDate()).isBetween(before, after);
+        Operation depositOperation = account.getHistory().get(0);
+        assertThat(depositOperation.getAmount()).isEqualTo(BigDecimal.ONE);
+        assertThat(depositOperation.getType()).isEqualTo(OperationType.DEPOSIT);
+        assertThat(depositOperation.getBalance()).isEqualTo(BigDecimal.ONE);
+        assertThat(depositOperation.getDate()).isBetween(before, after);
     }
 
     @Test
@@ -116,10 +128,16 @@ class AccountTest {
 
         // Assert
         assertThat(account.getHistory()).hasSize(2);
-        assertThat(account.getHistory().get(1).getAmount()).isEqualTo(BigDecimal.ONE);
-        assertThat(account.getHistory().get(1).getType()).isEqualTo(OperationType.WITHDRAWAL);
-        assertThat(account.getHistory().get(1).getBalance()).isEqualTo(new BigDecimal("9"));
-        assertThat(account.getHistory().get(1).getDate()).isBetween(before, after);
+        Operation withdrawalOperation = account.getHistory().get(1);
+        assertThat(withdrawalOperation.getAmount()).isEqualTo(BigDecimal.ONE);
+        assertThat(withdrawalOperation.getType()).isEqualTo(OperationType.WITHDRAWAL);
+        assertThat(withdrawalOperation.getBalance()).isEqualTo("9");
+        assertThat(withdrawalOperation.getDate()).isBetween(before, after);
+    }
+
+    private void assertThatAccountHasNotBeenModified(Account account) {
+        assertThat(account.getBalance()).isEqualTo(ZERO);
+        assertThat(account.getHistory()).isEmpty();
     }
 
 }
