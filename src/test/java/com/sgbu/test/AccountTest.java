@@ -44,4 +44,12 @@ class AccountTest {
         assertThatThrownBy(() -> account.withdrawal(BigDecimal.ONE))
                 .hasMessage("Insufficient amount");
     }
+
+    @Test
+    void make_a_withdrawal_with_sufficient_balance_should_subtract_amount_to_balance() {
+        Account account = new Account();
+        account.deposit(BigDecimal.TEN);
+        account.withdrawal(BigDecimal.ONE);
+        assertThat(account.getBalance()).isEqualTo(new BigDecimal("9"));
+    }
 }
